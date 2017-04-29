@@ -42,6 +42,13 @@ class BWGameField: UIView{
     static var currentPositionInReboArray : Int!
     static var lastUnlockedPositionInReboArray : Int!
     
+    // Constraints
+    @IBOutlet weak var titleTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var highScoreBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var confirmationTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var confirmationBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var reboSelectionHeight: NSLayoutConstraint!
+    
     //MARK: Initialization
     
     /// Returns the view when called
@@ -94,6 +101,21 @@ class BWGameField: UIView{
     
     /// Set up the dialog box
     func setupDialogBox(){
+        
+        if (BWCharacterStats.isDeviceiPad()){
+            titleTopConstraint.constant += 32
+            highScoreBottomConstraint.constant += 32
+            reboSelectionHeight.constant += 40
+            confirmationTopConstraint.constant += 16
+            confirmationBottomConstraint.constant += 16
+            layoutIfNeeded()
+            pausedLabel.font = UIFont(name: "Chalkduster", size: 28)
+            dialogTitle.font = UIFont(name: "Chalkduster", size: 30)
+            dialogMessage.font = UIFont(name: "Chalkduster", size: 24)
+            dialogHighScoreLabel.font = UIFont(name: "Chalkduster", size: 26)
+            dialogConfirmationMessage.font = UIFont(name: "Chalkduster", size: 26)
+        }
+        
         dialogBox.backgroundColor = .white
         dialogBox.layer.cornerRadius = 12
         dialogBox.tag = 1

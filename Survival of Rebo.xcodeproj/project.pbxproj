@@ -14,7 +14,6 @@
 		DA8103A11E85778D00A1408E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA81039F1E85778D00A1408E /* LaunchScreen.storyboard */; };
 		DA8103AC1E85788E00A1408E /* BWCharacters.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8103AB1E85788E00A1408E /* BWCharacters.swift */; };
 		DA8103AE1E8578AC00A1408E /* BWGameField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8103AD1E8578AC00A1408E /* BWGameField.swift */; };
-		DA8103AF1E857CE800A1408E /* bounce.aif in Resources */ = {isa = PBXBuildFile; fileRef = DA8103A81E85780600A1408E /* bounce.aif */; };
 		DA8103B11E8585F000A1408E /* BWGameField.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA8103B01E8585F000A1408E /* BWGameField.xib */; };
 		DA8199A21E85AAC10032ECF3 /* BWCharacterClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8199A11E85AAC10032ECF3 /* BWCharacterClass.swift */; };
 		DAE6692E1E98117D00E4C488 /* BWUserDefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE6692D1E98117D00E4C488 /* BWUserDefaultKeys.swift */; };
@@ -28,7 +27,6 @@
 		DA81039D1E85778D00A1408E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DA8103A01E85778D00A1408E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DA8103A21E85778D00A1408E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DA8103A81E85780600A1408E /* bounce.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = bounce.aif; sourceTree = "<group>"; };
 		DA8103AB1E85788E00A1408E /* BWCharacters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BWCharacters.swift; sourceTree = "<group>"; };
 		DA8103AD1E8578AC00A1408E /* BWGameField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BWGameField.swift; sourceTree = "<group>"; };
 		DA8103B01E8585F000A1408E /* BWGameField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BWGameField.xib; sourceTree = "<group>"; };
@@ -76,7 +74,6 @@
 				DA81039A1E85778D00A1408E /* Main.storyboard */,
 				DA81039D1E85778D00A1408E /* Assets.xcassets */,
 				DA81039F1E85778D00A1408E /* LaunchScreen.storyboard */,
-				DA8103A81E85780600A1408E /* bounce.aif */,
 				DA8103A21E85778D00A1408E /* Info.plist */,
 			);
 			path = "Survival of Rebo";
@@ -142,7 +139,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA8103AF1E857CE800A1408E /* bounce.aif in Resources */,
 				DA8103B11E8585F000A1408E /* BWGameField.xib in Resources */,
 				DA8103A11E85778D00A1408E /* LaunchScreen.storyboard in Resources */,
 				DA81039E1E85778D00A1408E /* Assets.xcassets in Resources */,

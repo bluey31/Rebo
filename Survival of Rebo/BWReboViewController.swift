@@ -44,7 +44,7 @@ public class BWReboGameController: UIViewController {
         if !hasUnlockedHatlessRebo {
             // Easter Egg
             let hatlessReboUnlockGesture = UITapGestureRecognizer(target: self, action: #selector(self.hatlessReboTapDetected))
-            hatlessReboUnlockGesture.numberOfTapsRequired = 10
+            hatlessReboUnlockGesture.numberOfTapsRequired = 5
             headerBar.addGestureRecognizer(hatlessReboUnlockGesture)
         }
     }
