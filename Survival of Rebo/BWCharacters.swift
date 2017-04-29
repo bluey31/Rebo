@@ -50,6 +50,7 @@ public enum BWReboColor{
     case purple
     case silver
 }
+// Lets us keep track of the order the Rebo's should appear
 let reboArray : [BWReboColor] = [.hatless, .red, .blue, .orange, .purple, .silver]
 
 /// Object class for Rebo.
@@ -61,10 +62,10 @@ public class Rebo: Character {
     
     public init(x: CGFloat, y: CGFloat, colour: BWReboColor){
         self.colour = colour
-        width = BWCharacterClass.getReboSize(for: colour).width
-        height = BWCharacterClass.getReboSize(for: colour).height
+        width = BWCharacterStats.getReboSize(for: colour).width
+        height = BWCharacterStats.getReboSize(for: colour).height
         super.init(frame: CGRect(x: x, y: y, width: self.width, height: self.height))
-        self.image = BWCharacterClass.getReboImage(for: colour)
+        self.image = BWCharacterStats.getReboImage(for: colour)
         self.tag = 2
     }
     
@@ -107,13 +108,13 @@ public class Bull: Character {
     public var amountOfBounces: Int
     public var dx: CGFloat
     public var dy: CGFloat
-    public var width: CGFloat = BWCharacterClass.getBullSize().width
-    public var height: CGFloat = BWCharacterClass.getBullSize().height
+    public var width: CGFloat = BWCharacterStats.getBullSize().width
+    public var height: CGFloat = BWCharacterStats.getBullSize().height
     
     public init(x: CGFloat, y: CGFloat){
         self.amountOfBounces = 0
-        self.dx = BWCharacterClass.getBullSpeed()
-        self.dy = BWCharacterClass.getBullSpeed()
+        self.dx = BWCharacterStats.getBullSpeed()
+        self.dy = BWCharacterStats.getBullSpeed()
         
         super.init(x: x, y: y, image: UIImage(named: "Bull")!)
         self.frame = CGRect(x: x, y: y, width: self.width, height: self.height)
@@ -122,8 +123,8 @@ public class Bull: Character {
     
     public init(pos: CGPoint){
         self.amountOfBounces = 0
-        self.dx = BWCharacterClass.getBullSpeed()
-        self.dy = BWCharacterClass.getBullSpeed()
+        self.dx = BWCharacterStats.getBullSpeed()
+        self.dy = BWCharacterStats.getBullSpeed()
     
         super.init(x: pos.x, y: pos.y, image: UIImage(named: "Bull")!)
         self.frame = CGRect(x: pos.x, y: pos.y, width: self.width, height: self.height)
@@ -132,8 +133,8 @@ public class Bull: Character {
     
     required public init?(coder aDecoder: NSCoder) {
         self.amountOfBounces = 0
-        self.dx = BWCharacterClass.getBullSpeed()
-        self.dy = BWCharacterClass.getBullSpeed()
+        self.dx = BWCharacterStats.getBullSpeed()
+        self.dy = BWCharacterStats.getBullSpeed()
         super.init(coder: aDecoder)
     }
 }

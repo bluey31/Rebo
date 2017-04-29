@@ -1,6 +1,9 @@
 //
-//  BWDevice.swift
+//  BWCharacterStats.swift
 //  Survival of Rebo
+//
+//  This class contains all the information necessary to setthe characters sizes 
+//  and speeds based off the devices size.
 //
 //  Created by Brendon Warwick on 24/03/2017.
 //  Copyright © 2017 Brendon Warwick. All rights reserved.
@@ -9,21 +12,22 @@
 import Foundation
 import UIKit
 
-class BWCharacterClass {
+class BWCharacterStats {
     
+    // Used by the dialog to know if the screen will be too squished for extar details.
     class func isScreenTooSmallForExtraDetails() -> Bool {
         let bounds = UIScreen.main.bounds
         let (w, h) = (bounds.width, bounds.height)
         
         switch (w, h){
             
-            /* iPad */
+        /* iPad */
         // 9.7 inch screens (Mini, iPad Air, etc)
         case (768, 1024) :  return false
         // 12.9 inch screen (Pro)
         case (1024, 1366):  return false
             
-            /* iPhone */
+        /* iPhone */
         // 4 inch screens (5, SE, etc)
         case (320, 568)  :  return true
         // 4.7 inch screen (6, 7, etc)

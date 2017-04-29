@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  BWReboViewController.swift
 //  Survival of Rebo
 //
 //  Created by Brendon Warwick on 24/03/2017.
@@ -27,8 +27,15 @@ public class BWReboGameController: UIViewController {
     // MARK: Class & View Initialization methods
     
     public override func viewDidLoad() {
+        // Checks if secret Rebo has already been unlocked or not
         hatlessReboChecks()
         play()
+    }
+    
+    // Styles our main parent view
+    public override func viewDidLayoutSubviews() {
+        scoreLabel.font = titleLabel.font
+        drawFieldBounds(color: UIColor.red)
     }
     
     func hatlessReboChecks(){
@@ -42,13 +49,8 @@ public class BWReboGameController: UIViewController {
         }
     }
     
-    // Styles our main parent view
-    public override func viewDidLayoutSubviews() {
-        scoreLabel.font = titleLabel.font
-        drawFieldBounds(color: UIColor.red)
-    }
-    
     func play() {
+        // Load the Game Field
         gameField = BWGameField.instanceOfNib(scoreLabel: scoreLabel)
         gameplayField.backgroundColor = .black
         // Load the gameplay handler
@@ -91,7 +93,7 @@ public class BWReboGameController: UIViewController {
     
     // MARK: Hatless Rebo Unlock
     
-    var counter = 4
+    var time = 4
     
     func hatlessReboTapDetected(){
         // User has unlocked hatless Rebo
@@ -103,8 +105,8 @@ public class BWReboGameController: UIViewController {
     }
     
     func updateUnlockCountdown(){
-        if counter > 0 {
-            counter -= 1
+        if time > 0 {
+            time -= 1
         }else{
             titleLabel.text = "Survival of Rebo"
         }

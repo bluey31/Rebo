@@ -18,6 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    /**
+     * Pauses the game when the app goes into a unactive state
+     */
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state.
         gameField.pause(forcePause: true)

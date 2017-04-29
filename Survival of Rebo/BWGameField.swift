@@ -17,21 +17,20 @@ import AVFoundation
 
 class BWGameField: UIView{
     
-    // MARK : Attributes and Delegates
+    // MARK: Attributes and Delegates
     
     static var currentRebo: BWReboColor!
+    static var gameStarted: Bool!
+    static var scoreLabel: UILabel!
+    static var tap: UITapGestureRecognizer!
+    static var doubleTap: UITapGestureRecognizer!
     
-    static var gameStarted : Bool!
-    static var scoreLabel : UILabel!
-    static var tap : UITapGestureRecognizer!
-    static var doubleTap : UITapGestureRecognizer!
-    
+    // Pause Attributes
     static var paused: Bool!
-    
     @IBOutlet weak var pausedLabel: UILabel!
     
     // Dialog Box attributes
-    @IBOutlet weak var dialogBox : UIView!
+    @IBOutlet weak var dialogBox: UIView!
     @IBOutlet weak var dialogTitle: UILabel!
     @IBOutlet weak var dialogMessage: UILabel!
     @IBOutlet weak var dialogHighScoreLabel: UILabel!
@@ -45,7 +44,7 @@ class BWGameField: UIView{
     
     //MARK: Initialization
     
-    // Return the view when called
+    /// Returns the view when called
     class func instanceOfNib(scoreLabel: UILabel!) -> BWGameField {
         self.scoreLabel = scoreLabel
         self.gameTimer = nil
@@ -58,7 +57,7 @@ class BWGameField: UIView{
     }
     
     override func awakeFromNib() {
-        // Let the user drag Rebo
+        // Let the user drag Rebo by dragging the view
         let drag = UIPanGestureRecognizer(target: self, action: #selector(handleDrag(panRecognizer:)))
         self.addGestureRecognizer(drag)
         
@@ -93,19 +92,19 @@ class BWGameField: UIView{
     
     // MARK: Dialog Box Stuff
     
-    // Set up dialog box
+    /// Set up the dialog box
     func setupDialogBox(){
         dialogBox.backgroundColor = .white
         dialogBox.layer.cornerRadius = 12
         dialogBox.tag = 1
     }
     
-    // Present a dialog that when clicked prompts a start to the game
+    /// Present a dialog that when clicked prompts a start to the game
     func showStartDialog(){
         // Show the dialog
         
         var message = "Drag the screen to move Rebo and help him survive."
-        if (!BWCharacterClass.isScreenTooSmallForExtraDetails()){
+        if (!BWCharacterStats.isScreenTooSmallForExtraDetails()){
             message += "\n\n\nDouble tap to pause."
         }
         showDialog(title: "Welcome to Rebo ♥️",
@@ -117,6 +116,7 @@ class BWGameField: UIView{
         self.addGestureRecognizer(BWGameField.tap)
     }
     
+    /// Shows the main dialog with given data
     func showDialog(title: String, message: String, continueMessage: String, showHighScore: Bool){
         dialogBox.isHidden = false
         dialogTitle.text = title
@@ -131,6 +131,7 @@ class BWGameField: UIView{
         self.bringSubview(toFront: dialogBox)
     }
     
+    /// Just hides the dialog
     func hideDialog(){
         dialogBox.isHidden = true
     }
@@ -140,11 +141,14 @@ class BWGameField: UIView{
         dialogHighScoreLabel.text = "High Score: \(highScore)"
     }
     
+    // MARK: Gameplay
+    
     static var gameTimer: Timer? = nil
     
+    /// The method called to kick off a game
     @objc func rotate(){
         
-        // Remove all the old bulls (if they are present) and the original rebo
+        // Remove all the old bulls (if they are present) (2) and the original rebo (3)
         for view in self.subviews {
             if view.tag == 2 || view.tag == 3 {
                 view.removeFromSuperview()
@@ -176,7 +180,7 @@ class BWGameField: UIView{
         updateScoreLabel()
     }
     
-    // Loads Rebo and all of the bulls into the view
+    /// Loads Rebo and all of the bulls into the view
     public func loadCharactersInto(view: UIView){
         view.addSubview(rebo)
         for bull in bulls{
@@ -184,7 +188,7 @@ class BWGameField: UIView{
         }
     }
     
-    // Pauses the game
+    /// Pauses and unpauses the game. Force Pause will force a pause = true
     func pause(forcePause: Bool){
         
         if (forcePause){
@@ -227,82 +231,94 @@ class BWGameField: UIView{
     
     // MARK: Bull Moving Methods
     
+    /// Called at every frame update.
     @objc func moveBulls(){
         processRound()
+        bulls.forEach{ b in
+            move(bull:b)
+        }
+    }
+    
+    func move(bull: Bull){
+        
         let upper_limit: CGFloat = 5
         let lower_limit: CGFloat = 4
+        
+        // It is more efficient to update score label only when a bounce is detected, as opposed to every frame
+        
         // Flip the sign of the x and y directions if the bull touches the pen bounds
-        for bull in bulls {
-            // It is more efficient to update score label only when a bounce is detected, as opposed to every frame
+        
+        // Left of play area or right of play area
+        if (bull.x + bull.dx - (bull.frame.width/2) < 4 ||
+            CGFloat(bull.x + bull.dx + (bull.frame.width/2)) > self.frame.width - 4){
             
-            // Left of play area or right of play area
-            if (bull.x + bull.dx - (bull.frame.width/2) < 4 ||
-                CGFloat(bull.x + bull.dx + (bull.frame.width/2)) > self.frame.width - 4){
-                
-                bull.dx *= -1
-                let randOffset = randRange(lower: -1, upper: 1)
-                // Stops bulls moving horizontally or too slow/ fast
-                if !(bull.dx + randOffset == 0){
-                    bull.dx += randOffset
-                }
-                
-                if(bull.dx > upper_limit){
-                    bull.dx = BWCharacterClass.getBullSpeed()
-                }else if(bull.dx < -upper_limit){
-                    bull.dx = BWCharacterClass.getBullSpeed() * -1
-                }else if(bull.dx > -lower_limit && bull.dx < lower_limit){
-                    if (bull.dx < 0){
-                        bull.dx = BWCharacterClass.getBullSpeed() * -1
-                    }else{
-                        bull.dx = BWCharacterClass.getBullSpeed()
-                    }
-                }
-                
-                bull.amountOfBounces += 1
-                
-                updateScoreLabel()
+            bull.dx *= -1
+            let randOffset = randRange(lower: -1, upper: 1)
+            // Stops bulls moving horizontally or too slow/ fast
+            if !(bull.dx + randOffset == 0){
+                bull.dx += randOffset
             }
             
-            // Top of play area or bottom of play area
-            if(bull.y + bull.dy - (bull.frame.height/2) < 4 ||
-                CGFloat(bull.y + bull.dy + (bull.frame.height/2)) > self.frame.height - 4){
-                
-                bull.dy *= -1
-                let randOffset = randRange(lower: -1, upper: 1)
-                // Stops bulls moving vertically or too slow/ fast
-                if !(bull.dy + randOffset == 0){
-                    bull.dy += randOffset
+            if(bull.dx > upper_limit){
+                bull.dx = BWCharacterStats.getBullSpeed()
+            }else if(bull.dx < -upper_limit){
+                bull.dx = BWCharacterStats.getBullSpeed() * -1
+            }else if(bull.dx > -lower_limit && bull.dx < lower_limit){
+                if (bull.dx < 0){
+                    bull.dx = BWCharacterStats.getBullSpeed() * -1
+                }else{
+                    bull.dx = BWCharacterStats.getBullSpeed()
                 }
-                
-                // Stops bull moving crazy fast
-                if (bull.dy == bull.dx){ bull.dy -= 1 }
-                
-                if(bull.dy > upper_limit){
-                    bull.dy = BWCharacterClass.getBullSpeed()
-                }else if(bull.dy < -upper_limit){
-                    bull.dy = BWCharacterClass.getBullSpeed() * -1
-                }else if(bull.dy > -lower_limit && bull.dy < lower_limit){
-                    if (bull.dy < 0){
-                        bull.dy = BWCharacterClass.getBullSpeed() * -1
-                    }else{
-                        bull.dy = BWCharacterClass.getBullSpeed()
-                    }
-                }
-                
-                bull.amountOfBounces += 1;
-
-                updateScoreLabel()
             }
             
-            // Update position of Bull
-            bull.x += bull.dx
-            bull.y += bull.dy
-            bull.updatePosition(x: bull.x, y: bull.y)
+            bull.amountOfBounces += 1
+            
+            updateScoreLabel()
         }
+        
+        // Top of play area or bottom of play area
+        if(bull.y + bull.dy - (bull.frame.height/2) < 4 ||
+            CGFloat(bull.y + bull.dy + (bull.frame.height/2)) > self.frame.height - 4){
+            
+            bull.dy *= -1
+            let randOffset = randRange(lower: -1, upper: 1)
+            // Stops bulls moving vertically or too slow/ fast
+            if !(bull.dy + randOffset == 0){
+                bull.dy += randOffset
+            }
+            
+            // Stops bull moving crazy fast
+            if (bull.dy == bull.dx){ bull.dy -= 1 }
+            
+            if(bull.dy > upper_limit){
+                bull.dy = BWCharacterStats.getBullSpeed()
+            }else if(bull.dy < -upper_limit){
+                bull.dy = BWCharacterStats.getBullSpeed() * -1
+            }else if(bull.dy > -lower_limit && bull.dy < lower_limit){
+                if (bull.dy < 0){
+                    bull.dy = BWCharacterStats.getBullSpeed() * -1
+                }else{
+                    bull.dy = BWCharacterStats.getBullSpeed()
+                }
+            }
+            
+            bull.amountOfBounces += 1;
+            
+            updateScoreLabel()
+        }
+        
+        // Update position of Bull
+        bull.x += bull.dx
+        bull.y += bull.dy
+        bull.updatePosition(x: bull.x, y: bull.y)
     }
     
     func randRange(lower: Int , upper: Int) -> CGFloat {
         return CGFloat(lower + Int(arc4random_uniform(UInt32(upper - lower + 1))))
+    }
+    
+    func randomIntFrom(start: Int, to end: Int) -> Int {
+        return Int(arc4random_uniform(UInt32(end - start + 1))) + start
     }
     
     func processRound(){
@@ -319,6 +335,40 @@ class BWGameField: UIView{
             }
         }
     }
+    
+    // Spawns a new bull onto the field at a random position that is not occupied by Rebo
+    func spawnNewBull(){
+        let newBull = Bull(pos: self.getRandomPoisitonForBull())
+        bulls.append(newBull)
+        self.addSubview(newBull)
+    }
+    
+    func getRandomPoisitonForBull() -> CGPoint {
+        
+        let bullSize = BWCharacterStats.getBullSize()
+        
+        var x = randomIntFrom(start: 4 + Int(bullSize.width), to: Int(self.frame.width) - Int(bullSize.width))
+        var y = randomIntFrom(start: 4 + Int(bullSize.height), to: Int(self.frame.height) - Int(bullSize.height))
+        
+        // Generates a new position if a bull is spawned on top of Rebo
+        while(rebo.frame.intersects(CGRect(x: x, y: y, width: 50, height: 50))){
+            x = randomIntFrom(start: 4 + Int(bullSize.width), to: Int(self.frame.width) - Int(bullSize.width))
+            y = randomIntFrom(start: 4 + Int(bullSize.height), to: Int(self.frame.height) - Int(bullSize.height))
+        }
+        
+        return CGPoint(x: x, y: y)
+    }
+    
+    // MARK: Scoring
+    
+    func currentScore() -> Int{
+        if bulls != nil{
+            return bulls.first!.amountOfBounces
+        }
+        return 0
+    }
+    
+    // MARK: EndGame methods
     
     func gameEnded(state: BWGameState){
         // Stop the timer
@@ -342,6 +392,7 @@ class BWGameField: UIView{
     }
     
     // MARK: Character Selection
+    
     @IBAction func rightButtonPressed(_ sender: Any) {
         if (BWGameField.currentPositionInReboArray! == reboArray.count-1){
             BWGameField.currentPositionInReboArray! = 0
@@ -377,64 +428,34 @@ class BWGameField: UIView{
         }
         let currentRebo = reboArray[BWGameField.currentPositionInReboArray]
         
-        let minimumScoreForCurrentRebo = BWCharacterClass.getMinimumScore(for: currentRebo)
+        // Fetch the minimum score needed for the current selected Rebo
+        let minimumScoreForCurrentRebo = BWCharacterStats.getMinimumScore(for: currentRebo)
         
-        // Secret Characters
+        // Check if user has unlocked secret Rebo
         let hasUnlockedHatlessRebo = UserDefaults.standard.bool(forKey: BWHatlessReboUnlocked)
         
-        lockedReboImage.image = BWCharacterClass.getReboImage(for: currentRebo)
+        // Gets the image for the selected Rebo
+        lockedReboImage.image = BWCharacterStats.getReboImage(for: currentRebo)
         
+        // If user is on hatless but hasnt unlocked it
         if currentRebo == .hatless && !hasUnlockedHatlessRebo{
             lockedReboImage.alpha = 0.1
             unlockedAtLabel.isHidden = false
             unlockedAtLabel.text = "Secret"
+            
+        // If user is on character that they have not unlocked
         }else if highScore < minimumScoreForCurrentRebo{
             lockedReboImage.alpha = 0.45
             unlockedAtLabel.isHidden = false
             unlockedAtLabel.text = "Unlocked after Level \(minimumScoreForCurrentRebo)"
+            
+        // If user is on character they are eligble for
         }else{
             unlockedAtLabel.isHidden = true
             lockedReboImage.alpha = 1.0
             BWGameField.currentRebo = currentRebo
             BWGameField.lastUnlockedPositionInReboArray = BWGameField.currentPositionInReboArray
-            
         }
-    }
-    
-    // Spawns a new bull onto the field at a random position that is not occupied by Rebo
-    func spawnNewBull(){
-        let newBull = Bull(pos: self.getRandomPoisitonForBull())
-        bulls.append(newBull)
-        self.addSubview(newBull)
-    }
-    
-    func getRandomPoisitonForBull() -> CGPoint {
-        
-        let bullSize = BWCharacterClass.getBullSize()
-        
-        var x = randomIntFrom(start: 4 + Int(bullSize.width), to: Int(self.frame.width) - Int(bullSize.width))
-        var y = randomIntFrom(start: 4 + Int(bullSize.height), to: Int(self.frame.height) - Int(bullSize.height))
-        
-        // Generates a new position if a bull is spawned on top of Rebo
-        while(rebo.frame.intersects(CGRect(x: x, y: y, width: 50, height: 50))){
-            x = randomIntFrom(start: 4 + Int(bullSize.width), to: Int(self.frame.width) - Int(bullSize.width))
-            y = randomIntFrom(start: 4 + Int(bullSize.height), to: Int(self.frame.height) - Int(bullSize.height))
-        }
-        
-        return CGPoint(x: x, y: y)
-    }
-    
-    func randomIntFrom(start: Int, to end: Int) -> Int {
-        return Int(arc4random_uniform(UInt32(end - start + 1))) + start
-    }
-    
-    // MARK: Scoring
-    
-    func currentScore() -> Int{
-        if bulls != nil{
-            return bulls.first!.amountOfBounces
-        }
-        return 0
     }
 }
 
