@@ -102,23 +102,25 @@ class BWGameField: UIView{
     /// Set up the dialog box
     func setupDialogBox(){
         
-        if (BWCharacterStats.isDeviceiPad()){
-            titleTopConstraint.constant += 32
-            highScoreBottomConstraint.constant += 32
-            reboSelectionHeight.constant += 40
-            confirmationTopConstraint.constant += 16
-            confirmationBottomConstraint.constant += 16
-            layoutIfNeeded()
-            pausedLabel.font = UIFont(name: "Chalkduster", size: 28)
-            dialogTitle.font = UIFont(name: "Chalkduster", size: 30)
-            dialogMessage.font = UIFont(name: "Chalkduster", size: 24)
-            dialogHighScoreLabel.font = UIFont(name: "Chalkduster", size: 26)
-            dialogConfirmationMessage.font = UIFont(name: "Chalkduster", size: 26)
-        }
+        if (BWUtility.isDeviceiPad()){ styleDialogForTablet() }
         
         dialogBox.backgroundColor = .white
         dialogBox.layer.cornerRadius = 12
         dialogBox.tag = 1
+    }
+    
+    func styleDialogForTablet(){
+        titleTopConstraint.constant += 32
+        highScoreBottomConstraint.constant += 32
+        reboSelectionHeight.constant += 40
+        confirmationTopConstraint.constant += 16
+        confirmationBottomConstraint.constant += 16
+        layoutIfNeeded()
+        pausedLabel.font = UIFont(name: "Chalkduster", size: 28)
+        dialogTitle.font = UIFont(name: "Chalkduster", size: 30)
+        dialogMessage.font = UIFont(name: "Chalkduster", size: 24)
+        dialogHighScoreLabel.font = UIFont(name: "Chalkduster", size: 26)
+        dialogConfirmationMessage.font = UIFont(name: "Chalkduster", size: 26)
     }
     
     /// Present a dialog that when clicked prompts a start to the game
@@ -126,7 +128,7 @@ class BWGameField: UIView{
         // Show the dialog
         
         var message = "Drag the screen to move Rebo and help him survive."
-        if (!BWCharacterStats.isScreenTooSmallForExtraDetails()){
+        if (!BWUtility.isScreenTooSmallForExtraDetails()){
             message += "\n\n\nDouble tap to pause."
         }
         showDialog(title: "Welcome to Rebo ♥️",

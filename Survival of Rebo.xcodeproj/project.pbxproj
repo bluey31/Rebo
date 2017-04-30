@@ -15,8 +15,9 @@
 		DA8103AC1E85788E00A1408E /* BWCharacters.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8103AB1E85788E00A1408E /* BWCharacters.swift */; };
 		DA8103AE1E8578AC00A1408E /* BWGameField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8103AD1E8578AC00A1408E /* BWGameField.swift */; };
 		DA8103B11E8585F000A1408E /* BWGameField.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA8103B01E8585F000A1408E /* BWGameField.xib */; };
-		DA8199A21E85AAC10032ECF3 /* BWCharacterClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8199A11E85AAC10032ECF3 /* BWCharacterClass.swift */; };
+		DA8199A21E85AAC10032ECF3 /* BWCharacterStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8199A11E85AAC10032ECF3 /* BWCharacterStats.swift */; };
 		DAE6692E1E98117D00E4C488 /* BWUserDefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE6692D1E98117D00E4C488 /* BWUserDefaultKeys.swift */; };
+		DAF8DE011EB567D700E97D00 /* BWUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF8DE001EB567D700E97D00 /* BWUtility.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,8 +31,9 @@
 		DA8103AB1E85788E00A1408E /* BWCharacters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BWCharacters.swift; sourceTree = "<group>"; };
 		DA8103AD1E8578AC00A1408E /* BWGameField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BWGameField.swift; sourceTree = "<group>"; };
 		DA8103B01E8585F000A1408E /* BWGameField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BWGameField.xib; sourceTree = "<group>"; };
-		DA8199A11E85AAC10032ECF3 /* BWCharacterClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BWCharacterClass.swift; sourceTree = "<group>"; };
+		DA8199A11E85AAC10032ECF3 /* BWCharacterStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BWCharacterStats.swift; sourceTree = "<group>"; };
 		DAE6692D1E98117D00E4C488 /* BWUserDefaultKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BWUserDefaultKeys.swift; sourceTree = "<group>"; };
+		DAF8DE001EB567D700E97D00 /* BWUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BWUtility.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,19 +66,52 @@
 		DA8103951E85778D00A1408E /* Survival of Rebo */ = {
 			isa = PBXGroup;
 			children = (
-				DA8103961E85778D00A1408E /* AppDelegate.swift */,
-				DAE6692D1E98117D00E4C488 /* BWUserDefaultKeys.swift */,
-				DA8199A11E85AAC10032ECF3 /* BWCharacterClass.swift */,
-				DA8103AB1E85788E00A1408E /* BWCharacters.swift */,
-				DA8103AD1E8578AC00A1408E /* BWGameField.swift */,
-				DA8103B01E8585F000A1408E /* BWGameField.xib */,
-				DA8103981E85778D00A1408E /* BWReboViewController.swift */,
-				DA81039A1E85778D00A1408E /* Main.storyboard */,
+				DAF8DE041EB5683300E97D00 /* Delegate */,
+				DAF8DE021EB5680900E97D00 /* Utility */,
+				DAF8DE051EB5683900E97D00 /* Characters */,
+				DAF8DE031EB5682600E97D00 /* Main Game */,
 				DA81039D1E85778D00A1408E /* Assets.xcassets */,
 				DA81039F1E85778D00A1408E /* LaunchScreen.storyboard */,
 				DA8103A21E85778D00A1408E /* Info.plist */,
 			);
 			path = "Survival of Rebo";
+			sourceTree = "<group>";
+		};
+		DAF8DE021EB5680900E97D00 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				DAE6692D1E98117D00E4C488 /* BWUserDefaultKeys.swift */,
+				DAF8DE001EB567D700E97D00 /* BWUtility.swift */,
+				DA8199A11E85AAC10032ECF3 /* BWCharacterStats.swift */,
+			);
+			name = Utility;
+			sourceTree = "<group>";
+		};
+		DAF8DE031EB5682600E97D00 /* Main Game */ = {
+			isa = PBXGroup;
+			children = (
+				DA8103AD1E8578AC00A1408E /* BWGameField.swift */,
+				DA8103B01E8585F000A1408E /* BWGameField.xib */,
+				DA8103981E85778D00A1408E /* BWReboViewController.swift */,
+				DA81039A1E85778D00A1408E /* Main.storyboard */,
+			);
+			name = "Main Game";
+			sourceTree = "<group>";
+		};
+		DAF8DE041EB5683300E97D00 /* Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				DA8103961E85778D00A1408E /* AppDelegate.swift */,
+			);
+			name = Delegate;
+			sourceTree = "<group>";
+		};
+		DAF8DE051EB5683900E97D00 /* Characters */ = {
+			isa = PBXGroup;
+			children = (
+				DA8103AB1E85788E00A1408E /* BWCharacters.swift */,
+			);
+			name = Characters;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -153,7 +188,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA8199A21E85AAC10032ECF3 /* BWCharacterClass.swift in Sources */,
+				DA8199A21E85AAC10032ECF3 /* BWCharacterStats.swift in Sources */,
+				DAF8DE011EB567D700E97D00 /* BWUtility.swift in Sources */,
 				DA8103991E85778D00A1408E /* BWReboViewController.swift in Sources */,
 				DA8103AC1E85788E00A1408E /* BWCharacters.swift in Sources */,
 				DA8103971E85778D00A1408E /* AppDelegate.swift in Sources */,
